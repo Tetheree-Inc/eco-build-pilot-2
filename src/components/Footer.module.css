@@ -1,0 +1,40 @@
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  font-size: 0.875rem;
+  color: #64748b;
+  border-top: 1px solid #e2e8f0;
+  background: #fff;
+}
+
+.version {
+  font-variant-numeric: tabular-nums;
+}
+
+.env {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.75rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  background: #e2e8f0;
+  color: #475569;
+}
+
+.env[data-env='DEV'] {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.env[data-env='PROD'] {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.separator {
+  opacity: 0.5;
+}
