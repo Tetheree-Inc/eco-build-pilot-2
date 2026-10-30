@@ -15,8 +15,21 @@
       </div>
     </header>
 
-    <main id="status-main" class="site-main" aria-live="polite">
-      <p class="site-main__loading">Loading status…</p>
+    <main class="site-main">
+      <div id="status-main" class="site-main__status" aria-live="polite">
+        <p class="site-main__loading">Loading status…</p>
+      </div>
+
+      <section
+        id="changelog-section"
+        class="changelog"
+        aria-labelledby="changelog-heading"
+      >
+        <h2 id="changelog-heading" class="changelog__title">Changelog</h2>
+        <div id="changelog-root" class="changelog__root">
+          <p class="changelog__loading">Loading changelog…</p>
+        </div>
+      </section>
     </main>
 
     <footer class="site-footer">
