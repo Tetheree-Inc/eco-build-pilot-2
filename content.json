@@ -1,3 +1,28 @@
 {
-  "blocks": []
+  "blocks": [
+    {
+      "type": "status-badge",
+      "label": "Build status",
+      "text": "Operational",
+      "detail": "Eco build pilot — content is driven by content.json at the repo root.",
+      "variant": "ok"
+    },
+    {
+      "type": "team",
+      "title": "Core team",
+      "members": [
+        {
+          "name": "Platform engineering",
+          "role": "Build & deploy",
+          "detail": "Owns GitHub Pages delivery and CI gates.",
+          "url": "https://github.com/tetheree-inc"
+        },
+        {
+          "name": "Product",
+          "role": "Content",
+          "detail": "Updates status and team blocks via content.json."
+        }
+      ]
+    }
+  ]
 }

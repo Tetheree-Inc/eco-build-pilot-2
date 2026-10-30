@@ -67,6 +67,118 @@ body {
   color: var(--muted);
 }
 
+.site-main__error {
+  margin: 0;
+  padding: 1rem 1.125rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.status-badge {
+  margin: 0 0 1.5rem;
+  padding: 1.125rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--surface);
+  border-left-width: 0.35rem;
+}
+
+.status-badge--ok {
+  border-left-color: #3d9a5f;
+}
+
+.status-badge--warn {
+  border-left-color: #c9872e;
+}
+
+.status-badge--neutral {
+  border-left-color: var(--muted);
+}
+
+.status-badge__label {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.status-badge__text {
+  margin: 0.35rem 0 0;
+  font-size: 1.35rem;
+  font-weight: 650;
+}
+
+.status-badge__detail {
+  margin: 0.65rem 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.team-block {
+  margin: 0;
+}
+
+.team-block__title {
+  margin: 0 0 0.75rem;
+  font-size: 1.125rem;
+  font-weight: 650;
+}
+
+.team-block__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.team-block__member {
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--surface);
+}
+
+.team-block__name {
+  display: block;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.team-block__name--link {
+  color: #6eb5ff;
+  text-decoration: none;
+}
+
+.team-block__name--link:hover,
+.team-block__name--link:focus-visible {
+  text-decoration: underline;
+}
+
+@media (prefers-color-scheme: light) {
+  .team-block__name--link {
+    color: #0b57d0;
+  }
+}
+
+.team-block__role {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.9375rem;
+  color: var(--muted);
+}
+
+.team-block__detail {
+  margin: 0.45rem 0 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
 .site-footer {
   border-top: 1px solid var(--border);
   background: var(--surface);
