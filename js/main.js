@@ -24,8 +24,15 @@
   var CHANGELOG_ERROR_MESSAGE =
     "We couldn't load the changelog right now. Please try again later.";
 
+  var CHANGELOG_FILTER_ALL = "all";
+
   var CHANGELOG_FILTER_TABS = [
-    { filterType: null, slug: "all", label: "All" },
+    {
+      filterType: CHANGELOG_FILTER_ALL,
+      slug: "all",
+      label: "All",
+      ariaLabel: "All changelog entry types",
+    },
     { filterType: "Feature", slug: "feature", label: "Feature" },
     { filterType: "Fix", slug: "fix", label: "Fix" },
     { filterType: "Improvement", slug: "improvement", label: "Improvement" },
@@ -160,7 +167,7 @@
   function renderChangelog(root, entries) {
     root.replaceChildren();
 
-    var activeFilterType = null;
+    var activeFilterType = CHANGELOG_FILTER_TABS[0].filterType;
     var visibleCount = CHANGELOG_BATCH_SIZE;
 
     var filters = document.createElement("div");
@@ -176,6 +183,9 @@
       tab.id = "changelog-filter-" + tabDef.slug;
       tab.setAttribute("aria-controls", "changelog-entry-list");
       tab.textContent = tabDef.label;
+      if (tabDef.ariaLabel) {
+        tab.setAttribute("aria-label", tabDef.ariaLabel);
+      }
       filters.appendChild(tab);
       return { button: tab, filterType: tabDef.filterType };
     });
@@ -211,7 +221,7 @@
     button.setAttribute("aria-describedby", "changelog-show-more-status");
 
     function entryMatchesFilter(entry) {
-      if (activeFilterType === null) {
+      if (activeFilterType === CHANGELOG_FILTER_ALL) {
         return true;
       }
       return entry.type === activeFilterType;
