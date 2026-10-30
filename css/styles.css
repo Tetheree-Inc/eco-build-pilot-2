@@ -61,9 +61,152 @@ body {
 
 .site-main {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.site-main__status {
+  min-height: 0;
 }
 
 .site-main__loading {
+  color: var(--muted);
+}
+
+.changelog {
+  margin: 0;
+}
+
+.changelog__title {
+  margin: 0 0 1rem;
+  font-size: 1.125rem;
+  font-weight: 650;
+}
+
+.changelog__loading,
+.changelog__empty,
+.changelog__error {
+  margin: 0;
+  padding: 1rem 1.125rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.changelog__error {
+  color: var(--text);
+}
+
+.changelog__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.changelog__entry {
+  margin: 0;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--surface);
+  border-left-width: 0.35rem;
+  border-left-color: var(--muted);
+}
+
+.changelog__entry[data-type="feature"] {
+  border-left-color: #6eb5ff;
+}
+
+.changelog__entry[data-type="fix"] {
+  border-left-color: #3d9a5f;
+}
+
+.changelog__entry[data-type="improvement"] {
+  border-left-color: #c9872e;
+}
+
+.changelog__entry[data-type="security-advisory"] {
+  border-left-color: #d04a4a;
+}
+
+@media (prefers-color-scheme: light) {
+  .changelog__entry[data-type="feature"] {
+    border-left-color: #0b57d0;
+  }
+}
+
+.changelog__entry-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.35rem 1rem;
+  margin: 0 0 0.5rem;
+}
+
+.changelog__entry-date {
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.changelog__entry-type {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.changelog__entry-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 650;
+}
+
+.changelog__entry-summary {
+  margin: 0.45rem 0 0;
+  font-size: 0.9375rem;
+  color: var(--muted);
+}
+
+.changelog__controls {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.changelog__show-more {
+  font: inherit;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 0.55rem 1rem;
+  cursor: pointer;
+}
+
+.changelog__show-more:hover:not(:disabled),
+.changelog__show-more:focus-visible {
+  border-color: var(--text);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.changelog__show-more:disabled {
+  cursor: default;
+  color: var(--muted);
+}
+
+.changelog__status {
+  margin: 0;
+  font-size: 0.875rem;
   color: var(--muted);
 }
 
