@@ -1,16 +1,39 @@
 {
   "blocks": [
     {
+      "type": "status-badge",
       "label": "Overall",
-      "value": "Operational",
-      "detail": "Pilot status page shell is live.",
-      "state": "ok"
+      "text": "Operational",
+      "variant": "ok",
+      "detail": "Pilot status page shell is live."
     },
     {
+      "type": "status-badge",
       "label": "Environment",
-      "value": "GitHub Pages",
-      "detail": "Static HTML/CSS/JS with deploy-time footer metadata.",
-      "state": "ok"
+      "text": "GitHub Pages",
+      "variant": "ok",
+      "detail": "Static HTML/CSS/JS with deploy-time footer metadata."
+    },
+    {
+      "type": "milestones",
+      "title": "Pilot milestones",
+      "items": [
+        {
+          "title": "Page shell and footer metadata",
+          "status": "done",
+          "description": "Header, main region, and deploy-time build stamp."
+        },
+        {
+          "title": "Content from content.json",
+          "status": "current",
+          "description": "Status badges and milestones rendered client-side."
+        },
+        {
+          "title": "Eco build gate on deploy",
+          "status": "upcoming",
+          "description": "Production and dev paths on one Pages site."
+        }
+      ]
     }
   ]
 }
