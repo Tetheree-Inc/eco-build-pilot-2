@@ -19,8 +19,17 @@
 
   var CHANGELOG_EMPTY_MESSAGE =
     "No changelog entries yet. Check back after the next release.";
+  var CHANGELOG_FILTER_EMPTY_MESSAGE =
+    "No changelog entries match this filter. Try another type or show all entries.";
   var CHANGELOG_ERROR_MESSAGE =
     "We couldn't load the changelog right now. Please try again later.";
+
+  var CHANGELOG_FILTER_TABS = [
+    { filterType: null, slug: "all", label: "All" },
+    { filterType: "Feature", slug: "feature", label: "Feature" },
+    { filterType: "Fix", slug: "fix", label: "Fix" },
+    { filterType: "Improvement", slug: "improvement", label: "Improvement" },
+  ];
 
   function changelogJsonUrl() {
     return new URL("./changelog.json", document.baseURI).href;
@@ -151,27 +160,45 @@
   function renderChangelog(root, entries) {
     root.replaceChildren();
 
+    var activeFilterType = null;
+    var visibleCount = CHANGELOG_BATCH_SIZE;
+
+    var filters = document.createElement("div");
+    filters.className = "changelog__filters";
+    filters.setAttribute("role", "tablist");
+    filters.setAttribute("aria-label", "Filter changelog by type");
+
+    var filterTabs = CHANGELOG_FILTER_TABS.map(function (tabDef) {
+      var tab = document.createElement("button");
+      tab.type = "button";
+      tab.className = "changelog__filter-tab";
+      tab.setAttribute("role", "tab");
+      tab.id = "changelog-filter-" + tabDef.slug;
+      tab.setAttribute("aria-controls", "changelog-entry-list");
+      tab.textContent = tabDef.label;
+      filters.appendChild(tab);
+      return { button: tab, filterType: tabDef.filterType };
+    });
+
+    var filterEmpty = document.createElement("p");
+    filterEmpty.className = "changelog__empty changelog__filter-empty";
+    filterEmpty.hidden = true;
+    filterEmpty.textContent = CHANGELOG_FILTER_EMPTY_MESSAGE;
+
     var list = document.createElement("div");
     list.className = "changelog__list";
     list.setAttribute("role", "list");
+    list.id = "changelog-entry-list";
 
-    entries.forEach(function (entry, index) {
+    entries.forEach(function (entry) {
       var item = createEntryElement(entry);
       item.setAttribute("role", "listitem");
-      item.hidden = index >= CHANGELOG_BATCH_SIZE;
       list.appendChild(item);
     });
 
-    root.appendChild(list);
-
-    if (entries.length <= CHANGELOG_BATCH_SIZE) {
-      return;
-    }
-
-    var visibleCount = CHANGELOG_BATCH_SIZE;
-
     var controls = document.createElement("div");
     controls.className = "changelog__controls";
+    controls.hidden = true;
 
     var status = document.createElement("p");
     status.className = "changelog__status";
@@ -183,16 +210,43 @@
     button.setAttribute("aria-controls", "changelog-entry-list");
     button.setAttribute("aria-describedby", "changelog-show-more-status");
 
-    list.id = "changelog-entry-list";
+    function entryMatchesFilter(entry) {
+      if (activeFilterType === null) {
+        return true;
+      }
+      return entry.type === activeFilterType;
+    }
 
-    function updateShowMoreState() {
-      var remaining = entries.length - visibleCount;
+    function countFilteredEntries() {
+      var count = 0;
+      for (var i = 0; i < entries.length; i += 1) {
+        if (entryMatchesFilter(entries[i])) {
+          count += 1;
+        }
+      }
+      return count;
+    }
+
+    function updateFilterTabs() {
+      filterTabs.forEach(function (tab) {
+        var selected = tab.filterType === activeFilterType;
+        tab.button.setAttribute("aria-selected", selected ? "true" : "false");
+        tab.button.tabIndex = selected ? 0 : -1;
+      });
+    }
+
+    function updateShowMoreState(filteredCount) {
+      if (filteredCount <= CHANGELOG_BATCH_SIZE) {
+        return;
+      }
+
+      var remaining = filteredCount - visibleCount;
       if (remaining <= 0) {
         button.disabled = true;
         button.setAttribute("aria-disabled", "true");
         button.textContent = "All entries shown";
         status.textContent =
-          "Showing all " + entries.length + " changelog entries.";
+          "Showing all " + filteredCount + " changelog entries.";
         return;
       }
 
@@ -202,30 +256,102 @@
       button.textContent =
         "Show more (" + nextBatch + " more entr" + (nextBatch === 1 ? "y" : "ies") + ")";
       status.textContent =
-        "Showing " +
-        visibleCount +
-        " of " +
-        entries.length +
-        " changelog entries.";
+        "Showing " + visibleCount + " of " + filteredCount + " changelog entries.";
     }
 
-    button.addEventListener("click", function () {
-      var nextVisible = Math.min(
-        visibleCount + CHANGELOG_BATCH_SIZE,
-        entries.length
-      );
-      for (var i = visibleCount; i < nextVisible; i += 1) {
-        list.children[i].hidden = false;
+    function applyVisibility() {
+      var filteredCount = 0;
+
+      for (var i = 0; i < entries.length; i += 1) {
+        var item = list.children[i];
+        if (!entryMatchesFilter(entries[i])) {
+          item.hidden = true;
+          continue;
+        }
+
+        var batchIndex = filteredCount;
+        filteredCount += 1;
+        item.hidden = batchIndex >= visibleCount;
       }
-      visibleCount = nextVisible;
-      updateShowMoreState();
+
+      filterEmpty.hidden = filteredCount > 0;
+      list.hidden = filteredCount === 0;
+
+      if (filteredCount <= CHANGELOG_BATCH_SIZE) {
+        controls.hidden = true;
+      } else {
+        controls.hidden = false;
+        updateShowMoreState(filteredCount);
+      }
+
+      return filteredCount;
+    }
+
+    function setActiveFilter(filterType) {
+      activeFilterType = filterType;
+      visibleCount = CHANGELOG_BATCH_SIZE;
+      updateFilterTabs();
+      applyVisibility();
+    }
+
+    function selectedFilterIndex() {
+      for (var i = 0; i < filterTabs.length; i += 1) {
+        if (filterTabs[i].filterType === activeFilterType) {
+          return i;
+        }
+      }
+      return 0;
+    }
+
+    filterTabs.forEach(function (tab) {
+      tab.button.addEventListener("click", function () {
+        setActiveFilter(tab.filterType);
+      });
     });
 
-    updateShowMoreState();
+    filters.addEventListener("keydown", function (event) {
+      var key = event.key;
+      if (
+        key !== "ArrowLeft" &&
+        key !== "ArrowRight" &&
+        key !== "Home" &&
+        key !== "End"
+      ) {
+        return;
+      }
 
+      event.preventDefault();
+      var index = selectedFilterIndex();
+      if (key === "Home") {
+        index = 0;
+      } else if (key === "End") {
+        index = filterTabs.length - 1;
+      } else if (key === "ArrowRight") {
+        index = (index + 1) % filterTabs.length;
+      } else {
+        index = (index - 1 + filterTabs.length) % filterTabs.length;
+      }
+
+      var nextTab = filterTabs[index];
+      setActiveFilter(nextTab.filterType);
+      nextTab.button.focus();
+    });
+
+    button.addEventListener("click", function () {
+      var filteredCount = countFilteredEntries();
+      visibleCount = Math.min(visibleCount + CHANGELOG_BATCH_SIZE, filteredCount);
+      applyVisibility();
+    });
+
+    root.appendChild(filters);
+    root.appendChild(filterEmpty);
+    root.appendChild(list);
     controls.appendChild(button);
     controls.appendChild(status);
     root.appendChild(controls);
+
+    updateFilterTabs();
+    applyVisibility();
   }
 
   function loadChangelog() {
