@@ -29,6 +29,49 @@
         <div id="changelog-root" class="changelog__root">
           <p class="changelog__loading">Loading changelog…</p>
         </div>
+
+        <aside
+          class="changelog-updates"
+          aria-labelledby="changelog-updates-heading"
+        >
+          <h3 id="changelog-updates-heading" class="changelog-updates__title">
+            Get updates
+          </h3>
+          <p class="changelog-updates__hint">
+            Email alerts for new releases (pilot—no data is sent yet).
+          </p>
+          <form
+            id="changelog-updates-form"
+            class="changelog-updates__form"
+            novalidate
+          >
+            <label class="changelog-updates__label" for="changelog-updates-email"
+              >Email address</label
+            >
+            <div class="changelog-updates__row">
+              <input
+                type="email"
+                id="changelog-updates-email"
+                class="changelog-updates__input"
+                name="email"
+                autocomplete="email"
+                spellcheck="false"
+                inputmode="email"
+                required
+              />
+              <button type="submit" class="changelog-updates__submit">
+                Sign up
+              </button>
+            </div>
+            <p
+              id="changelog-updates-feedback"
+              class="changelog-updates__feedback"
+              role="status"
+              aria-live="polite"
+              hidden
+            ></p>
+          </form>
+        </aside>
       </section>
     </main>
 

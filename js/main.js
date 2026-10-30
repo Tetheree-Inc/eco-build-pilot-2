@@ -364,6 +364,74 @@
     applyVisibility();
   }
 
+  var UPDATES_EMPTY_EMAIL_MESSAGE = "Enter your email address.";
+  var UPDATES_INVALID_EMAIL_MESSAGE = "Enter a valid email address.";
+  var UPDATES_SUCCESS_MESSAGE =
+    "Thanks—you're on the list for pilot updates. (Nothing was sent.)";
+
+  function isSyntacticallyValidEmail(value) {
+    var trimmed = value.trim();
+    if (trimmed === "") {
+      return false;
+    }
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed);
+  }
+
+  function initChangelogUpdatesSignup() {
+    var form = document.getElementById("changelog-updates-form");
+    var emailInput = document.getElementById("changelog-updates-email");
+    var feedback = document.getElementById("changelog-updates-feedback");
+    if (!form || !emailInput || !feedback) {
+      return;
+    }
+
+    function hideFeedback() {
+      feedback.hidden = true;
+      feedback.textContent = "";
+      feedback.classList.remove(
+        "changelog-updates__feedback--error",
+        "changelog-updates__feedback--success"
+      );
+    }
+
+    function showFeedback(kind, message) {
+      feedback.hidden = false;
+      feedback.textContent = message;
+      feedback.classList.remove(
+        "changelog-updates__feedback--error",
+        "changelog-updates__feedback--success"
+      );
+      feedback.classList.add("changelog-updates__feedback--" + kind);
+    }
+
+    emailInput.addEventListener("input", function () {
+      emailInput.removeAttribute("aria-invalid");
+      hideFeedback();
+    });
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      var value = emailInput.value;
+      if (value.trim() === "") {
+        emailInput.setAttribute("aria-invalid", "true");
+        showFeedback("error", UPDATES_EMPTY_EMAIL_MESSAGE);
+        emailInput.focus();
+        return;
+      }
+
+      if (!isSyntacticallyValidEmail(value)) {
+        emailInput.setAttribute("aria-invalid", "true");
+        showFeedback("error", UPDATES_INVALID_EMAIL_MESSAGE);
+        emailInput.focus();
+        return;
+      }
+
+      emailInput.removeAttribute("aria-invalid");
+      showFeedback("success", UPDATES_SUCCESS_MESSAGE);
+    });
+  }
+
   function loadChangelog() {
     var root = document.getElementById("changelog-root");
     if (!root) {
@@ -406,6 +474,7 @@
 
   function init() {
     dismissStatusLoading();
+    initChangelogUpdatesSignup();
     loadChangelog();
   }
 
