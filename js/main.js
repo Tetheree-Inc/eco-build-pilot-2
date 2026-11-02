@@ -239,6 +239,8 @@
     var status = document.createElement("p");
     status.className = "changelog__status";
     status.id = "changelog-show-more-status";
+    status.setAttribute("aria-live", "polite");
+    status.setAttribute("aria-atomic", "true");
 
     var button = document.createElement("button");
     button.type = "button";
