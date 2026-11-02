@@ -54,14 +54,39 @@
   }
 
   function parseChangelogDate(value) {
-    if (value == null || value === "") {
+    if (!nonEmptyString(value)) {
       return null;
     }
-    var parsed = new Date(value);
+
+    var trimmed = value.trim();
+    var isoDate = /^(\d{4})-(\d{2})-(\d{2})$/.exec(trimmed);
+    if (isoDate) {
+      var year = Number(isoDate[1]);
+      var month = Number(isoDate[2]);
+      var day = Number(isoDate[3]);
+      var localDate = new Date(year, month - 1, day);
+      if (
+        localDate.getFullYear() !== year ||
+        localDate.getMonth() !== month - 1 ||
+        localDate.getDate() !== day
+      ) {
+        return null;
+      }
+      return {
+        date: localDate,
+        dateIso: isoDate[1] + "-" + isoDate[2] + "-" + isoDate[3],
+      };
+    }
+
+    var parsed = new Date(trimmed);
     if (Number.isNaN(parsed.getTime())) {
       return null;
     }
-    return parsed;
+
+    return {
+      date: parsed,
+      dateIso: parsed.toISOString().slice(0, 10),
+    };
   }
 
   function formatEntryDate(date) {
@@ -81,8 +106,8 @@
       return null;
     }
 
-    var date = parseChangelogDate(raw.date);
-    if (!date) {
+    var parsedDate = parseChangelogDate(raw.date);
+    if (!parsedDate) {
       return null;
     }
 
@@ -106,7 +131,8 @@
     }
 
     return {
-      date: date,
+      date: parsedDate.date,
+      dateIso: parsedDate.dateIso,
       type: type,
       title: raw.title.trim(),
       summary: summary,
@@ -139,7 +165,7 @@
 
     var timeEl = document.createElement("time");
     timeEl.className = "changelog__entry-date";
-    timeEl.dateTime = entry.date.toISOString().slice(0, 10);
+    timeEl.dateTime = entry.dateIso;
     timeEl.textContent = formatEntryDate(entry.date);
 
     var typeEl = document.createElement("p");
