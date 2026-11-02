@@ -1,0 +1,42 @@
+[
+  {
+    "title": "Public roadmap page",
+    "summary": "Surface planned and in-flight work on the status site from repo-root JSON with no build step.",
+    "status": "In progress"
+  },
+  {
+    "title": "Roadmap status filters",
+    "summary": "Let visitors narrow the roadmap list by Planned, In progress, Paused, and Shipped labels.",
+    "status": "Planned"
+  },
+  {
+    "title": "Roadmap JSON seed data",
+    "summary": "Check in sample roadmap entries at the repo root so local preview and Pages can exercise every status.",
+    "status": "Shipped"
+  },
+  {
+    "title": "CMS-backed roadmap editing",
+    "summary": "Author roadmap items in a headless CMS instead of git commits; deferred until the static pilot stabilizes.",
+    "status": "Paused"
+  },
+  {
+    "title": "Roadmap RSS or Atom feed",
+    "summary": "Publish status changes as a feed for subscribers once the on-page roadmap UI ships.",
+    "status": "Planned"
+  },
+  {
+    "title": "Roadmap entry deep links",
+    "summary": "Stable fragment URLs for individual roadmap items to share in release notes and support tickets.",
+    "status": "In progress"
+  },
+  {
+    "title": "Third-party roadmap sync",
+    "summary": "Mirror items from an external product board; paused while we validate the file-based workflow.",
+    "status": "Paused"
+  },
+  {
+    "title": "Changelog cross-links",
+    "summary": "Link shipped roadmap items to matching changelog entries on the home page.",
+    "status": "Shipped"
+  }
+]
