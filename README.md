@@ -1,6 +1,6 @@
 # eco-build-pilot-2
 
-Empty pilot for the ECO request-to-build flow (WO 248, scope 127 E2E).
+Pilot status page (plain static HTML/CSS/JS) for the ECO request-to-build flow.
 
 - PROD: `main`, served at https://tetheree-inc.github.io/eco-build-pilot-2/
 - DEV: `develop`, served at https://tetheree-inc.github.io/eco-build-pilot-2/dev/

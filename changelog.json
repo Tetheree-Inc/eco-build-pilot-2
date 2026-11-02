@@ -1,0 +1,44 @@
+[
+  {
+    "date": "2026-10-30",
+    "type": "Feature",
+    "title": "Changelog on the home page",
+    "summary": "Recent product updates now appear on the status home page, loaded from a repo data file with no build step."
+  },
+  {
+    "date": "2026-10-22",
+    "type": "Improvement",
+    "title": "Clearer deploy footer",
+    "summary": "Build date and commit SHA in the footer use accessible time elements and monospace commit labels."
+  },
+  {
+    "date": "2026-10-15",
+    "type": "Fix",
+    "title": "Mobile header spacing",
+    "summary": "Header title and tagline no longer collide with narrow viewports; padding follows the pilot layout grid."
+  },
+  {
+    "date": "2026-10-08",
+    "type": "Security advisory",
+    "title": "Dependency review for static assets",
+    "summary": "Third-party assets were reviewed; no external script tags are loaded on the status page shell."
+  },
+  {
+    "date": "2026-09-28",
+    "type": "Feature",
+    "title": "Dark and light color schemes",
+    "summary": "The pilot theme respects prefers-color-scheme for background, surface, and text tokens."
+  },
+  {
+    "date": "2026-09-12",
+    "type": "Improvement",
+    "title": "Faster first paint",
+    "summary": "Stylesheets load from a single bundled CSS file; scripts use defer for non-blocking parse."
+  },
+  {
+    "date": "2026-08-30",
+    "type": "Fix",
+    "title": "Favicon MIME type",
+    "summary": "The SVG favicon is served with the correct image/svg+xml type in the document head."
+  }
+]
